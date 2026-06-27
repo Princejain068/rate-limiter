@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Limiter Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Custom Rate Limiter Dashboard</h1>
+
+    <!-- Algorithm Selection -->
+    <div class="config-card">
+        <label for="algo">Choose Algorithm</label>
+
+        <select id="algo">
+            <option value="slidingWindow">
+                Sliding Window
+            </option>
+
+            <option value="fixedWindow">
+                Fixed Window
+            </option>
+
+            <option value="tokenBucket">
+                Token Bucket
+            </option>
+
+            <option value="leakyBucket">
+                Leaky Bucket
+            </option>
+        </select>
+    </div>
+
+    <div class="metrics">
+
+        <div class="card">
+            <h2 id="mTotal">0</h2>
+            <p>Total Requests</p>
+        </div>
+
+        <div class="card success">
+            <h2 id="mAllowed">0</h2>
+            <p>Allowed</p>
+        </div>
+
+        <div class="card danger">
+            <h2 id="mBlocked">0</h2>
+            <p>Blocked</p>
+        </div>
+
+        <div class="card warning">
+            <h2 id="mRemaining">-</h2>
+            <p>Remaining</p>
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <button class="primary" onclick="fireOne()">
+            Send Request
+        </button>
+
+        <button onclick="fireBurst(5)">
+            Burst ×5
+        </button>
+
+        <button onclick="fireBurst(15)">
+            Burst ×15
+        </button>
+
+        <button id="autoBtn" onclick="toggleAuto()">
+            Auto Fire
+        </button>
+
+        <button class="danger-btn" onclick="resetAll()">
+            Reset
+        </button>
+
+    </div>
+
+    <div class="logs">
+        <h3>Request Logs</h3>
+        <div id="log"></div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
