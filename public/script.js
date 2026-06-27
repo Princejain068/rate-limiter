@@ -9,9 +9,7 @@ let state = {
 async function callApi() {
     try {
 
-        const response = await fetch(
-            'http://localhost:3000/api/hello'
-        );
+        const response = await fetch('/api/hello');
 
         const data = await response.json();
 
@@ -154,7 +152,7 @@ async function callApi() {
     try {
 
         const response = await fetch(
-            `http://localhost:3000/api/test?algorithm=${algorithm}`
+            `api/test?algorithm=${algorithm}`
         );
 
         const data = await response.json();
