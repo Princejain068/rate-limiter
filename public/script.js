@@ -47,7 +47,6 @@ async function fireOne() {
     else
         state.blocked++;
 
-    console.log(res)
     updateMetrics(res.data.remaining);
 
     state.logs.unshift(

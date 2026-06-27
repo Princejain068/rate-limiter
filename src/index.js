@@ -87,7 +87,6 @@ app.get('/api/test', (req, res) => {
 
     const remaining = res.getHeader('X-RateLimit-Remaining');
 
-    console.log(remaining);
 
     res.json({
         success: true,

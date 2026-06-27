@@ -1,20 +1,27 @@
-// src/algorithms/slidingWindow.js
 async function slidingWindow(redis, key, { limit, windowMs }) {
-  const now = Date.now();
-  const floor = now - windowMs;
+    const now = Date.now();
+    const windowStart = now - windowMs;
 
-  await redis.zremrangebyscore(key, '-inf', floor);
-  const count = await redis.zcard(key);
+    // Remove expired entries
+    await redis.zremrangebyscore(key, 0, windowStart);
 
-  if (count < limit) {
-    await redis.zadd(key, now, `${now}-${Math.random()}`);
-    await redis.pexpire(key, windowMs);
-  }
+    // Add current request
+    await redis.zadd(key, {
+        score: now,
+        member: `${now}-${Math.random()}`
+    });
 
-  return {
-    allowed: count < limit,
-    remaining: Math.max(0, limit - count - 1),
-    resetAt: now + windowMs,
-  };
+    // Count requests in current window
+    const count = await redis.zcount(key, windowStart, now);
+
+    // Expire key automatically
+    await redis.expire(key, Math.ceil(windowMs / 1000));
+
+    return {
+        allowed: count <= limit,
+        remaining: Math.max(0, limit - count),
+        resetAt: now + windowMs
+    };
 }
+
 module.exports = slidingWindow;
